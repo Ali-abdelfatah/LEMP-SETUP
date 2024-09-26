@@ -1,0 +1,6 @@
+# roles/wordpress/handlers/main.yml
+
+- name: Restart PHP-FPM
+  service:
+    name: php-fpm
+    state: restarted

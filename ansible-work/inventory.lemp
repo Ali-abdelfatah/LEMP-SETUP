@@ -1,0 +1,11 @@
+[mariadb_master]
+localhost ansible_connection=local ansible_become=yes ansible_become_method=sudo ansible_python_interpreter=/usr/bin/python3
+
+[mariadb_slave]
+192.168.100.92 ansible_ssh_user=aliabdo ansible_become=yes ansible_become_method=sudo ansible_python_interpreter=/usr/bin/python3
+
+[local]
+localhost ansible_connection=local
+
+[web]
+192.168.100.92 ansible_ssh_user=aliabdo ansible_become=yes ansible_become_method=sudo

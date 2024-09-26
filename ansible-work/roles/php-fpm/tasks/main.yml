@@ -1,0 +1,29 @@
+---
+# roles/php-fpm/tasks/main.yml
+
+# Install PHP-FPM and necessary PHP packages
+- name: Install PHP-FPM and PHP extensions
+  yum:
+    name:
+      - php-fpm
+      - php-mysqlnd
+      - php-cli
+      - php-json
+      - php-mbstring
+      - php-xml
+      - php-zip
+    state: present
+
+# Ensure PHP-FPM is enabled and started
+- name: Ensure PHP-FPM service is started and enabled
+  service:
+    name: php-fpm
+    state: started
+    enabled: yes
+
+# Copy PHP-FPM configuration file from template
+- name: Configure PHP-FPM
+  template:
+    src: php-fpm.conf.j2
+    dest: /etc/php-fpm.d/www.conf
+  notify: restart php-fpm

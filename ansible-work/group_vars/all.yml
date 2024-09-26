@@ -1,0 +1,22 @@
+domain_name: localhost.servebeer.com
+
+mariadb_master_ip: localhost
+
+mariadb_slave_ip: 192.168.100.92
+
+nginx_upstreams:
+
+  - 192.168.100.91
+  - 192.168.100.92
+
+nginx_port: 80
+
+mariadb_user_password: ali123
+
+
+# WordPress database configuration
+wordpress:
+  database_name: wordpress
+  database_user: wp_user
+  database_password: ali123
+  db_host: "192.168.100.91"   
