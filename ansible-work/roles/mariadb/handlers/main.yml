@@ -1,0 +1,6 @@
+# handlers/main.yml
+
+- name: Restart MariaDB
+  systemd:
+    name: mariadb
+    state: restarted

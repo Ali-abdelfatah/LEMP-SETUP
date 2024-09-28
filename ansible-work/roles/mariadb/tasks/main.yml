@@ -1,0 +1,77 @@
+---
+# tasks/main.yml
+
+- name: Install MariaDB
+  package:
+    name: mariadb-server
+    state: present
+
+- name: Ensure MariaDB service is running
+  systemd:
+    name: mariadb
+    state: started
+    enabled: yes
+
+# Add debug task before "Set password for alilool user in MariaDB"
+- name: Debug hostname and IPs
+  debug:
+    msg: "Inventory hostname: {{ inventory_hostname }}, Master IP: {{ mariadb_master_ip }}"
+
+- name: Debug master IP
+  debug:
+    var: mariadb_master_ip
+
+- name: Set password for alilool user in MariaDB
+  mysql_user:
+    name: alilool
+    password: "{{ mariadb_user_password }}"
+    host: localhost
+    state: present
+  when: inventory_hostname == 'localhost' or ansible_host == 'localhost'
+
+# Add debug task before "Create WordPress database"
+- name: Debug hostname and IPs
+  debug:
+    msg: "Inventory hostname: {{ inventory_hostname }}, Master IP: {{ mariadb_master_ip }}"
+
+- name: Create WordPress database
+  mysql_db:
+    name: "{{ wordpress.database_name }}"
+    state: present
+  when: inventory_hostname == mariadb_master_ip
+
+- name: Create WordPress user
+  mysql_user:
+    name: "{{ wordpress.database_user }}"
+    password: "{{ wordpress.database_password }}"
+    host: "{{ wordpress.db_host }}"
+    state: present
+  when: inventory_hostname == mariadb_master_ip
+
+- name: Grant privileges to WordPress user
+  mysql_user:
+    name: "{{ wordpress.database_user }}"
+    host: "{{ wordpress.db_host }}"
+    priv: "*.*:ALL"
+    state: present
+  become: true
+  when: inventory_hostname == mariadb_master_ip
+
+- name: Configure MariaDB Master
+  template:
+    src: my.cnf.master.j2
+    dest: /etc/my.cnf.d/server.cnf
+  when: inventory_hostname == mariadb_master_ip
+  notify: Restart MariaDB
+
+# Add debug task before "Configure MariaDB Slave"
+- name: Debug hostname and IPs
+  debug:
+    msg: "Inventory hostname: {{ inventory_hostname }}, Slave IP: {{ mariadb_slave_ip }}"
+
+- name: Configure MariaDB Slave
+  template:
+    src: my.cnf.slave.j2
+    dest: /etc/my.cnf.d/server.cnf
+  when: inventory_hostname == mariadb_slave_ip
+  notify: Restart MariaDB

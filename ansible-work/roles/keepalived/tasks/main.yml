@@ -1,0 +1,12 @@
+---
+- name: Install Keepalived
+  yum:
+    name: keepalived
+    state: present
+
+- name: Configure Keepalived for high availability
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+  notify:
+    - Restart Keepalived

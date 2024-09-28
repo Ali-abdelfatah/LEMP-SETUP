@@ -1,0 +1,13 @@
+<?php
+define('DB_NAME', '{{ wordpress.database_name }}');
+define('DB_USER', '{{ wordpress.database_user }}');
+define('DB_PASSWORD', '{{ wordpress.database_password }}');
+define('DB_HOST', '{{ wordpress.db_host }}');
+define('DB_CHARSET', 'utf8');
+define('DB_COLLATE', '');
+
+$table_prefix = 'wp_';
+define('WP_DEBUG', true);
+if ( !defined('ABSPATH') )
+    define('ABSPATH', __DIR__ . '/');
+require_once(ABSPATH . 'wp-settings.php');

@@ -1,0 +1,6 @@
+# roles/keepalived/handlers/main.yml
+
+- name: Restart Keepalived
+  service:
+    name: keepalived
+    state: restarted
