@@ -21,19 +21,66 @@ This project provides a highly available WordPress setup using the LEMP (Linux, 
 
 ## Project Structure
 
-lemp-project1/ ├── ansible-work/ ├── deployment/ │ ├── logs/ │ ├── scripts/ ├── documentation/ ├── README.md └── backups/
+LEMP-Project/
+├── ansible/
+│   ├── inventory.ini            # Ansible inventory file
+│   ├── playbook.yml             # Main Ansible playbook
+│   ├── group_vars/
+│   │   └── all.yml              # Variables for all hosts
+│   ├── roles/
+│   │   ├── nginx/
+│   │   │   ├── tasks/
+│   │   │   │   ├── main.yml     # Nginx installation and configuration
+│   │   │   │   ├── handlers.yml  # Handlers for Nginx (e.g., restart)
+│   │   │   └── templates/
+│   │   │       ├── nginx.conf.j2        # Nginx configuration template
+│   │   │       └── wordpress.conf.j2    # WordPress site configuration template
+│   │   ├── mariadb/
+│   │   │   ├── tasks/
+│   │   │   │   ├── main.yml       # MariaDB installation and configuration
+│   │   │   │   └── handlers.yml    # Handlers for MariaDB
+│   │   └── templates/
+│   │       └── my.cnf.j2          # MariaDB configuration template
+│   │   ├── wordpress/
+│   │   │   ├── tasks/
+│   │   │   │   ├── main.yml       # WordPress installation and configuration
+│   │   │   │   └── handlers.yml    # Handlers for WordPress
+│   │   └── templates/
+│   │       └── wp-config.php.j2    # WordPress config template
+│   │   ├── keepalived/
+│   │   │   ├── tasks/
+│   │   │   │   ├── main.yml       # Keepalived installation and configuration
+│   │   │   │   └── handlers.yml    # Handlers for Keepalived
+│   │   └── templates/
+│   │       └── keepalived.conf.j2  # Keepalived config template
+│   └── templates/
+│       └── inventory-template.ini  # Template for inventory file
+├── deployment/
+│   ├── scripts/
+│   │   ├── deploy.sh               # Deployment script for the LEMP stack
+│   │   ├── backup.sh               # Backup script for databases and files
+│   │   └── restore.sh              # Restore script for databases and files
+│   ├── logs/
+│   │   ├── nginx/                  # Nginx logs
+│   │   ├── mariadb/                # MariaDB logs
+│   │   └── wordpress/              # WordPress logs
+├── documentation/
+│   ├── architecture.md             # Architecture overview of the LEMP stack
+│   ├── deployment-guide.md         # Detailed deployment guide
+│   └── troubleshooting.md          # Troubleshooting common issues
+└── README.md                       # Project overview and setup instructions
 
 
 
 
 ## Technologies Used
 
-- **Linux** (CentOS)
-- **Nginx** - Web server and reverse proxy
-- **MariaDB** - Database server with replication
-- **PHP** - Server-side scripting language
-- **Keepalived** - High availability solution
-- **Ansible** - Automation and orchestration
+Linux (CentOS): Operating system for the servers.
+Nginx: Web server and reverse proxy.
+MariaDB: Database server with replication.
+PHP: Server-side scripting language.
+Keepalived: Provides high availability and failover.
+Ansible: Automation and configuration management.
 
 ## Deployment Steps
 
@@ -44,7 +91,7 @@ lemp-project1/ ├── ansible-work/ ├── deployment/ │ ├── logs/
 
 
 
-Run Deployment Scripts:
+##Run Deployment Scripts:
 
 Execute the Nginx configuration script:
 bash
