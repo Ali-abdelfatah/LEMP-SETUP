@@ -1,5 +1,5 @@
 ---
-- name: Set up the LEMP stack and WordPress
+- name: Set up the LEMP stack and WordPress for HA && load balancer
   hosts: all
   become: yes
   roles:

@@ -9,3 +9,6 @@ localhost ansible_connection=local
 
 [web]
 192.168.100.92 ansible_ssh_user=aliabdo ansible_become=yes ansible_become_method=sudo
+
+[elk-server]
+192.168.100.92 ansible_ssh_user=aliabdo ansible_become=yes ansible_become_method=sudo

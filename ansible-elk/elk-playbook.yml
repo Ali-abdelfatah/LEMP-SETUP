@@ -1,0 +1,14 @@
+---
+
+- hosts: elk_servers
+
+  become: yes
+
+  roles:
+
+    - elasticsearch
+
+    - logstash
+
+    - kibana
+

@@ -1,0 +1,30 @@
+---
+
+- name: Install Logstash
+
+  yum:
+
+    name: logstash
+
+    state: present
+
+
+- name: Create Logstash pipeline configuration
+
+  template:
+
+    src: logstash.conf.j2
+
+    dest: /etc/logstash/conf.d/logstash.conf
+
+
+- name: Enable and start Logstash
+
+  systemd:
+
+    name: logstash
+
+    enabled: yes
+
+    state: started
+

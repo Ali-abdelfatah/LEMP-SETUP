@@ -12,6 +12,7 @@ Solution: Ensure that Keepalived is running on both Nginx servers.
 bash
 
 sudo systemctl status keepalived
+
 ##2. Database Replication Issues
 Problem: Slave is not replicating data
 Solution: Check the replication status on the slave server:

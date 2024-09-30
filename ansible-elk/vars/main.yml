@@ -1,0 +1,6 @@
+#vars/all.yml
+
+elk_cluster_name: elk-cluster
+
+elasticsearch_node_name: "{{ elk-node-2 }}"
+
