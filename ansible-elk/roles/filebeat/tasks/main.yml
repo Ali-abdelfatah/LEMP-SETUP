@@ -1,0 +1,15 @@
+---
+# roles/filebeat/tasks/main.yml
+
+- name: Install Filebeat
+  yum:
+    name: filebeat
+    state: present
+  notify: Restart Filebeat
+
+- name: Copy Filebeat configuration
+  template:
+    src: filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+  notify: Restart Filebeat
+

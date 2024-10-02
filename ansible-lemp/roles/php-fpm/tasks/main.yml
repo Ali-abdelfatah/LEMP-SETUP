@@ -1,6 +1,4 @@
 ---
-# roles/php-fpm/tasks/main.yml
-
 # Install PHP-FPM and necessary PHP packages
 - name: Install PHP-FPM and PHP extensions
   yum:
@@ -26,4 +24,4 @@
   template:
     src: php-fpm.conf.j2
     dest: /etc/php-fpm.d/www.conf
-  notify: restart php-fpm
+  notify: Restart PHP-FPM  # Corrected here

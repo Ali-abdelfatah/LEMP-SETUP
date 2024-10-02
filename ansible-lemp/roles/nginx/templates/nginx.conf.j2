@@ -5,52 +5,16 @@ events {
 }
 
 http {
-
-  # Buffer settings for handling large headers and body sizes
+    # Buffer settings for handling large headers and body sizes
     large_client_header_buffers 4 16k;  # Adjust buffer size as needed
     client_max_body_size 64M;  # Allow larger uploads if necessary
-
-
-
 
     # Upstream configuration for load balancing between two servers
     upstream wordpress_backend {
         server 192.168.100.91;
         server 192.168.100.92;
-
-
-
     }
 
-    # HTTP server configuration
-    server {
-        listen 80;
-        server_name localhost.servebeer.com;
-
-        # Root directory and index configuration
-        root /var/www/wordpress;
-        index index.php index.html index.htm;
-
-        # Serve static files and PHP pages
-        location / {
-            proxy_pass http://wordpress_backend;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-        }
-
-        # PHP-FPM configuration block
-        location ~ \.php$ {
-            include fastcgi_params;
-            fastcgi_pass unix:/run/php-fpm/www.sock;
-            fastcgi_index index.php;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        }
-
-        # Deny access to .htaccess files for security
-        location ~ /\.ht {
-            deny all;
-        }
-    }
+    # Include your WordPress site configuration
+    include /etc/nginx/conf.d/*.conf;
 }

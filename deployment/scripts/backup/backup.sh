@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Define variables
-PROJECT_DIR="/path/to/lemp-project1"
-BACKUP_DIR="/path/to/safe/location"
+PROJECT_DIR="/var/www/wordpress"  # Your WordPress project directory
+BACKUP_DIR="/path/to/safe/location"  # Replace this with your actual backup directory
 DATE=$(date +"%Y%m%d_%H%M%S")
 PROJECT_BACKUP="lemp-project-backup_$DATE.tar.gz"
 DB_BACKUP="all_databases_$DATE.sql"

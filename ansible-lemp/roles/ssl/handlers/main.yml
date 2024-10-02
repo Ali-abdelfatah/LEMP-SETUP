@@ -1,6 +1,2 @@
-# roles/nginx/handlers/main.yml (add to existing handlers)
-
-- name: Reload Nginx for SSL
-  service:
-    name: nginx
-    state: reloaded
+---
+# handlers file for ssl
