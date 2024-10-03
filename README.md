@@ -1,32 +1,30 @@
-<<<<<<< HEAD
-# LEMP-SETUP
-HA-LEMP SETUP 
-=======
-# High-Availability LEMP WordPress Setup
+Resilient Web Application Infrastructure: High-Availability LEMP Stack with Load Balancing and ELK Stack, Managed by Ansible
 
 ## Overview
 
-This project provides a highly available WordPress setup using the LEMP (Linux, Nginx, MariaDB, PHP) stack. The deployment features load balancing across two Nginx servers, database replication, and a Keepalived configuration for high availability.
+This project provides a highly available WordPress setup using the LEMP (Linux, Nginx, MariaDB, PHP) stack, along with an integrated ELK (Elasticsearch, Logstash, Kibana) stack for centralized logging. The deployment features load balancing across two Nginx servers, database replication, and a Keepalived configuration for high availability.
 
 ## Table of Contents
 
-- [Project Structure](#project-structure)
-- [Technologies Used](#technologies-used)
-- [Deployment Steps](#deployment-steps)
-- [Configuration Details](#configuration-details)
-- [Logging](#logging)
-- [Backup Strategy](#backup-strategy)
-- [Troubleshooting](#troubleshooting)
-- [License](#license)
+1- [Project Structure](#project-structure)
+2- [Technologies Used](#technologies-used)
+3- [Deployment Steps](#deployment-steps)
+4- [Configuration Details](#configuration-details)
+5- [Logging](#logging)
+6- [Backup Strategy](#backup-strategy)
+7- [Troubleshooting](#troubleshooting)
+8- [License](#license)
 
 ## Project Structure
 
+
+
 LEMP-Project/
-├── ansible/
-│   ├── inventory.ini            # Ansible inventory file
-│   ├── playbook.yml             # Main Ansible playbook
+├── ansible-lemp/
+│   ├── inventory.ini            # Ansible inventory file for LEMP stack
+│   ├── lemp-playbook.yml        # Main Ansible playbook for LEMP stack
 │   ├── group_vars/
-│   │   └── all.yml              # Variables for all hosts
+│   │   └── all.yml              # Variables for all hosts in LEMP stack
 │   ├── roles/
 │   │   ├── nginx/
 │   │   │   ├── tasks/
@@ -39,22 +37,37 @@ LEMP-Project/
 │   │   │   ├── tasks/
 │   │   │   │   ├── main.yml       # MariaDB installation and configuration
 │   │   │   │   └── handlers.yml    # Handlers for MariaDB
-│   │   └── templates/
-│   │       └── my.cnf.j2          # MariaDB configuration template
+│   │   │   └── templates/
+│   │   │       └── my.cnf.j2          # MariaDB configuration template
 │   │   ├── wordpress/
 │   │   │   ├── tasks/
 │   │   │   │   ├── main.yml       # WordPress installation and configuration
 │   │   │   │   └── handlers.yml    # Handlers for WordPress
-│   │   └── templates/
-│   │       └── wp-config.php.j2    # WordPress config template
+│   │   │   └── templates/
+│   │   │       └── wp-config.php.j2    # WordPress config template
 │   │   ├── keepalived/
 │   │   │   ├── tasks/
 │   │   │   │   ├── main.yml       # Keepalived installation and configuration
 │   │   │   │   └── handlers.yml    # Handlers for Keepalived
-│   │   └── templates/
-│   │       └── keepalived.conf.j2  # Keepalived config template
-│   └── templates/
-│       └── inventory-template.ini  # Template for inventory file
+│   │   │   └── templates/
+│   │   │       └── keepalived.conf.j2  # Keepalived config template
+├── ansible-elk/
+│   ├── elk-playbook.yml          # Main Ansible playbook for ELK stack
+│   ├── inventory.ini             # Ansible inventory file for ELK stack
+│   ├── group_vars/
+│   │   └── all.yml               # Variables for all hosts in ELK stack
+│   ├── roles/
+│   │   ├── elk/
+│   │   │   ├── tasks/
+│   │   │   │   ├── main.yml       # ELK stack installation and configuration
+│   │   │   │   ├── handlers.yml    # Handlers for ELK stack
+│   │   │   └── templates/
+│   │   │       ├── filebeat.yml.j2    # Filebeat config template
+│   │   │       ├── elasticsearch.yml.j2 # Elasticsearch config template
+│   │   │       ├── kibana.yml.j2      # Kibana config template
+│   │   │       └── logstash.yml.j2     # Logstash config template
+│   │   └── vars/
+│   │       └── all.yml            # Variables for ELK stack
 ├── deployment/
 │   ├── scripts/
 │   │   ├── deploy.sh               # Deployment script for the LEMP stack
@@ -65,91 +78,86 @@ LEMP-Project/
 │   │   ├── mariadb/                # MariaDB logs
 │   │   └── wordpress/              # WordPress logs
 ├── documentation/
-│   ├── architecture.md             # Architecture overview of the LEMP stack
-│   ├── deployment-guide.md         # Detailed deployment guide
+│   ├── architecture.md             # Architecture overview of the LEMP and ELK stacks
+│   ├── deployment-guide.md         # Detailed deployment guide for LEMP and ELK
 │   └── troubleshooting.md          # Troubleshooting common issues
 └── README.md                       # Project overview and setup instructions
 
 
 
 
+
+
+
+
+
+
+
 ## Technologies Used
 
-Linux (CentOS): Operating system for the servers.
-Nginx: Web server and reverse proxy.
-MariaDB: Database server with replication.
-PHP: Server-side scripting language.
-Keepalived: Provides high availability and failover.
-Ansible: Automation and configuration management.
+- **Linux (CentOS)**: Operating system for the servers.
+
+- **Nginx**: Web server , reverse proxy and load balancer.
+
+- **MariaDB**: Database server with replication.
+
+- **PHP**: Server-side scripting language.
+
+- **Keepalived**: Provides high availability and failover.
+
+- **Ansible**: Automation and configuration management.
+
+- **ELK Stack**: Centralized logging solution, including:
+  - **Elasticsearch**: Data storage and search engine.
+  - **Logstash**: Log processing and forwarding.
+  - **Kibana**: Data visualization and management interface.
+- **Filebeat**: Lightweight shipper for forwarding and centralizing log data.
 
 ## Deployment Steps
 
 1. **Clone the Repository:**
    ```bash
    git clone <https://github.com/Ali-abdelfatah/LEMP-SETUP.git>
-   
-
-
-
-##Run Deployment Scripts:
-
-Execute the Nginx configuration script:
-bash
-Copy code
-./deployment/scripts/nginx.sh
-Set up WordPress:
-bash
-Copy code
-./deployment/scripts/wordpress.sh
-
-
-Configure Keepalived:
-
-Ensure Keepalived is installed and configured on both Nginx servers.
-
-
-
-Set Up Database Replication:
-
-Configure MariaDB on the master and slave servers as per your setup instructions.
 
 
 
 
 
-Configuration Details
+##Configuration Details
 
+--Nginx Configuration
 
-Nginx Configuration
+ -The Nginx configuration files are located in the deployment/scripts directory. Adjust the following settings as needed:
 
+##nginx.conf: Main Nginx configuration
 
-The Nginx configuration files are located in the deployment/scripts directory. Adjust the following settings as needed:
+##wordpress.conf: Configuration for the WordPress site
 
-nginx.conf: Main Nginx configuration
-wordpress.conf: Configuration for the WordPress site
-Keepalived Configuration
-The Keepalived configuration file should be set up to monitor the Nginx servers and provide failover capabilities.
+##Keepalived Configuration
 
-Logging
+##The Keepalived configuration file should be set up to monitor the Nginx servers and provide failover capabilities.
 
+--ELK Stack Configuration
+  
+ The ELK stack, along with Filebeat, is configured to collect logs from Nginx, PHP, MariaDB, and other relevant sources. The Filebeat configuration is set to send logs to Logstash for   
+processing and storage in Elasticsearch.
 
+--Logging
+ The logging setup includes:
 
-The logging setup includes:
+ Log Rotation: Ensure logs are rotated to prevent excessive disk usage.
+ --Scripts:
+ cleanup_logs.sh: A script to clean up old log files.
+  setup_logging.sh: A script to configure logging settings.
+  Backup Strategy
+  Backups are crucial for recovery. The backup strategy includes:
 
-Log Rotation: Ensure logs are rotated to prevent excessive disk usage.
-Scripts:
-cleanup_logs.sh - A script to clean up old log files.
-setup_logging.sh - A script to configure logging settings.
-Backup Strategy
-Backups are crucial for recovery. The backup strategy includes:
-
-Database Backups: Regularly scheduled backups of the MariaDB database.
-
-
-File Backups: Backups of the WordPress files and configuration.
-
-Backup Scripts
-
+--Database Backups: Regularly scheduled backups of the MariaDB database.
+-File Backups: Backups of the WordPress files and configuration.
+##Backup Scripts
 Place your backup scripts in the deployment/scripts directory.
 
->>>>>>> master
+--Troubleshooting
+For common issues, refer to the troubleshooting.md document in the documentation directory.
+
+
