@@ -72,7 +72,7 @@ LEMP-Project/
 │   ├── scripts/
 │   │   ├── deploy.sh               # Deployment script for the LEMP stack
 │   │   ├── backup.sh               # Backup script for databases and files
-│   │   └── restore.sh              # Restore script for databases and files
+│   │   └── scripts.conf        # Each servies has its own script      
 │   ├── logs/
 │   │   ├── nginx/                  # Nginx logs
 │   │   ├── mariadb/                # MariaDB logs
